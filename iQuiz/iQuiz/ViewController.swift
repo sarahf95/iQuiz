@@ -8,7 +8,25 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    
+    // Table
+    let categories : [String] = ["math", "hero", "science"]
+    let images : [String] = ["math", "heroes", "science"]
+    let descrip : [String] = ["Fun with numbers", "They'll save the day!", "Chemicals and stuff!"]
+    
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return categories.count
+    }
+    
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! ViewControllerTableViewCell
+        cell.pic.image = UIImage(named: (images[indexPath.row] + ".png"))
+        cell.title.text = categories[indexPath.row]
+        cell.descr.text = descrip[indexPath.row]
+        return cell
+    }
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,8 +38,7 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    // Table
-    var cells : [String] = ["math", "hero", "science"]
+
     
     @IBOutlet weak var table: UITableView!
     
