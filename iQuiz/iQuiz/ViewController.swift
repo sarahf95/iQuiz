@@ -11,20 +11,20 @@ import UIKit
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     // Table
-    let categories : [String] = ["math", "hero", "science"]
-    let images : [String] = ["math", "heroes", "science"]
-    let descrip : [String] = ["Fun with numbers", "They'll save the day!", "Chemicals and stuff!"]
+    let categories = ["Math", "Hero", "Science"]
+    let images = ["math", "superhero", "science"]
+    let descrip = ["Fun with numbers", "They'll save the day!", "Chemicals and stuff!"]
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return categories.count
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! ViewControllerTableViewCell
-        cell.pic.image = UIImage(named: (images[indexPath.row] + ".png"))
-        cell.title.text = categories[indexPath.row]
-        cell.descr.text = descrip[indexPath.row]
-        return cell
+        let cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier : "cell")
+        cell.imageView?.image = UIImage(named: (images[indexPath.row] + ".png"))
+        cell.textLabel?.text = categories[indexPath.row]
+//        cell.detailTextLabel?.text = descrip[indexPath.row]
+        return (cell)
     }
     
 
@@ -37,10 +37,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-
-    
-    @IBOutlet weak var table: UITableView!
     
 
     
