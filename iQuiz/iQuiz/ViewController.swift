@@ -8,65 +8,128 @@
 
 import UIKit
 
-class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource  {
     
-    // Table
-    let categories = ["Math", "Hero", "Science"]
-    let images = ["math", "superhero", "science"]
-    let descrip = ["Fun with numbers", "They'll save the day!", "Chemicals and stuff!"]
+    var selectedQuestions:[Any]?
+    
+    let questions =
+        ["Math":
+            ["description":"Fun with numbers!",
+             "icon": "math",
+             "questions":
+                [
+                    [
+                        "text": "What is 1 + 0?",
+                        "answer": "2",
+                        "options": [
+                            "0",
+                            "1",
+                            "-1",
+                            "2"
+                        ]
+                    ],
+                    [
+                        "text": "What is 3 * 3",
+                        "answer": "1",
+                        "options": [
+                            "9",
+                            "27",
+                            "6",
+                            "0"
+                        ]
+                    ],
+                    [
+                        "text": "What is the square root of 69",
+                        "answer": "4",
+                        "options": [
+                            "3",
+                            "1",
+                            "6",
+                            "9"
+                        ]
+                    ]
+                ],
+            ],
+         "Marvel Super Heroes":
+            ["description":"They'll save the day!",
+             "icon": "superhero",
+             "questions":
+                [
+                    [
+                        "text": "What is Captain America's name?",
+                        "answer": "3",
+                        "options": [
+                            "The Hulk",
+                            "Bucky Barnes",
+                            "Steve Rodgers",
+                            "Hawkeye"
+                        ]
+                    ],
+                ],
+            ],
+         "Science":
+            ["description":"Chemicals and stuff!",
+             "icon": "science",
+             "questions":
+                [
+                    [
+                        "text": "What is the chemical symbol for lead?",
+                        "answer": "3",
+                        "options": [
+                            "C",
+                            "Au",
+                            "Pb",
+                            "Li"
+                        ]
+                    ],
+                ],
+            ]
+    ]
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return categories.count
+        return questions.count
     }
-    
-//    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        let cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier : "cell")
-//        cell.imageView?.image = UIImage(named: (images[indexPath.row] + ".png"))
-//        cell.textLabel?.text = categories[indexPath.row]
-////        cell.detailTextLabel?.text = descrip[indexPath.row]
-//        return (cell)
-//    }
-//
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! ViewControllerTableViewCell
-        cell.myTitle.text = categories[indexPath.row]
-        cell.descript.text = descrip[indexPath.row]
-        cell.pic.image = UIImage(named: (images[indexPath.row]) as! String)
+        let keys = Array(questions.keys)[indexPath.row]
+        let subjects = questions[keys]! as [String:Any]
+        cell.myTitle.text = keys
+        cell.descript.text = subjects["description"] as! String
+        cell.pic.image = UIImage(named: subjects["icon"] as! String)
         return cell
     }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let cell = tableView.cellForRow(at: indexPath) as! ViewControllerTableViewCell
+        let key = cell.myTitle.text!
+        let dictionary = questions[key]! as [String:Any]
+        selectedQuestions = dictionary["questions"] as! [Any]
+        performSegue(withIdentifier: "questionSegue", sender: self)
     }
     
-
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let other = segue.destination as! QuestionViewController
+        other.questions = selectedQuestions
+        other.questionIndex = 0
+        other.score = 0
+    }
     
     @IBAction func clickSettings(_ sender: Any) {
-        
-        
         // create the alert
         let alert = UIAlertController(title: "Settings", message: "Settings go here", preferredStyle: UIAlertControllerStyle.alert)
-        
         // add an action (button)
         alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
-        
         // show the alert
         self.present(alert, animated: true, completion: nil)
     }
     
-    var myIndex = 0
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
     
-//    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
-//    {
-//        myIndex = indexPath.row
-//        performSegue(withIdentifier: "segue", sender: self)
-//    }
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
 }
 
