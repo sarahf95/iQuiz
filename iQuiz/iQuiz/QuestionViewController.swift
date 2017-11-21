@@ -21,10 +21,10 @@ class QuestionViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        print(questions)
         let currentNode = questions![questionIndex!] as! [String:Any]
         let currentQuestion = currentNode["text"] as! String
-        let currentOptions = currentNode["options"] as! [String]
+        let currentOptions = currentNode["answers"] as! [String]
         Question.text = currentQuestion
 
         for i in 0...(Answers.count - 1) {
